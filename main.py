@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 import subprocess
+import os
 
 subprocess.run(
     ["wget", "https://github.com/tesseract-ocr/tesseract/releases/download/4.1.1/tesseract-4.1.1.tar.gz"])
@@ -16,7 +17,7 @@ subprocess.run(["tar", "-xvf", "tesseract-4.1.1.tar.gz"])
 subprocess.run(["apt-get", "update"])
 subprocess.run(["apt-get", "install", "-y", "libpng-dev", "libjpeg-dev",
                "libtiff-dev", "zlib1g-dev", "autoconf", "automake", "libtool"])
-subprocess.run(["cd", "tesseract-4.1.1"])
+os.chdir("tesseract-4.1.1")
 subprocess.run(["./configure", "--with-extra-libraries=/usr/local/lib/"])
 subprocess.run(["make"])
 subprocess.run(["make", "install"])
