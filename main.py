@@ -8,10 +8,10 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
-import subprocess
+# import subprocess
 
-subprocess.call(["sudo", "apt-get", "install", "tesseract-ocr"])
-pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
+# subprocess.call(["sudo", "apt-get", "install", "tesseract-ocr"])
+# pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
 
 app = FastAPI()
