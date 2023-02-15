@@ -15,7 +15,7 @@ pytesseract.pytesseract.tesseract_cmd = r'../Tesseract-OCR/tesseract.exe'
 
 app = FastAPI()
 
-with open('drugName.json','r') as dataSet:
+with open('./drugName.json','r') as dataSet:
   data = json.load(dataSet)
 
 pharmacies = data["drug_list"]
