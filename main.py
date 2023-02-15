@@ -8,64 +8,74 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
-# import subprocess
+import subprocess
 
-# subprocess.call(["sudo", "apt-get", "install", "tesseract-ocr"])
+subprocess.run(
+    ["wget", "https://github.com/tesseract-ocr/tesseract/releases/download/4.1.1/tesseract-4.1.1.tar.gz"])
+subprocess.run(["tar", "-xvf", "tesseract-4.1.1.tar.gz"])
+subprocess.run(["sudo", "apt-get", "update"])
+subprocess.run(["sudo", "apt-get", "install", "-y", "libpng-dev", "libjpeg-dev",
+               "libtiff-dev", "zlib1g-dev", "autoconf", "automake", "libtool"])
+subprocess.run(["cd", "tesseract-4.1.1"])
+subprocess.run(["./configure", "--with-extra-libraries=/usr/local/lib/"])
+subprocess.run(["make"])
+subprocess.run(["sudo", "make", "install"])
+
 pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
-print(pytesseract)
-
-# app = FastAPI()
-
-# with open('drugName.json', 'r') as dataSet:
-#     data = json.load(dataSet)
-
-# pharmacies = data["drug_list"]
 
 
-# origins = ["*"]
+app = FastAPI()
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+with open('drugName.json', 'r') as dataSet:
+    data = json.load(dataSet)
+
+pharmacies = data["drug_list"]
 
 
-# def findPharmacy(imagePath, pharmacies):
-#     # Load the image
-#     # img = cv2.imread(imagePath)
+origins = ["*"]
 
-#     # Convert to grayscale
-#     gray = cv2.cvtColor(imagePath, cv2.COLOR_BGR2GRAY)
-#     gray = cv2.medianBlur(gray, 5)
-
-#     text = pytesseract.image_to_string(
-#         gray).lower().replace(r'[^\w\s]', '')
-#     foundPharmacy = ""
-#     for pharmacy in pharmacies:
-#         if pharmacy["drugName"].lower() in text:
-#             foundPharmacy = pharmacy["drugName"]
-#             break
-#         else:
-#             foundPharmacy = "กรุณาอัพโหลดภาพใหม่"
-
-#     return foundPharmacy
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
-# @app.post("/upload-file/")
-# async def create_upload_file(uploaded_file: UploadFile = File(...)):
-#     img = cv2.imdecode(np.fromstring(
-#         uploaded_file.file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
-#     print(img)
-#     result = findPharmacy(img, pharmacies)
-#     return {"result": result, "credit-by": "เพชรสุดหล่อ"}
+def findPharmacy(imagePath, pharmacies):
+    # Load the image
+    # img = cv2.imread(imagePath)
 
-# # def main():
-# #     text = findPharmacy("./images/1.jpg", pharmacies)
-# #     print(text)
+    # Convert to grayscale
+    gray = cv2.cvtColor(imagePath, cv2.COLOR_BGR2GRAY)
+    gray = cv2.medianBlur(gray, 5)
+
+    text = pytesseract.image_to_string(
+        gray).lower().replace(r'[^\w\s]', '')
+    foundPharmacy = ""
+    for pharmacy in pharmacies:
+        if pharmacy["drugName"].lower() in text:
+            foundPharmacy = pharmacy["drugName"]
+            break
+        else:
+            foundPharmacy = "กรุณาอัพโหลดภาพใหม่"
+
+    return foundPharmacy
 
 
-# if __name__ == "__main__":
-#     uvicorn.run("main:app", host="0.0.0.0", port=10000, reload=True)
+@app.post("/upload-file/")
+async def create_upload_file(uploaded_file: UploadFile = File(...)):
+    img = cv2.imdecode(np.fromstring(
+        uploaded_file.file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+    print(img)
+    result = findPharmacy(img, pharmacies)
+    return {"result": result, "credit-by": "เพชรสุดหล่อ"}
+
+# def main():
+#     text = findPharmacy("./images/1.jpg", pharmacies)
+#     print(text)
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=10000, reload=True)
