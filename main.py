@@ -8,9 +8,7 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
-import subprocess
 
-subprocess.call(["sudo", "apt-get", "install", "tesseract-ocr"])
 pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
 
@@ -68,4 +66,4 @@ async def create_upload_file(uploaded_file: UploadFile = File(...)):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=10000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
