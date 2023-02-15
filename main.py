@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
-pytesseract.pytesseract.tesseract_cmd = r'./Tesseract-OCR/tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
 
 
@@ -48,8 +48,8 @@ def findPharmacy(imagePath, pharmacies):
         if pharmacy["drugName"].lower() in text:
             foundPharmacy = pharmacy["drugName"]
             break
-        # else :
-        #     foundPharmacy = "กรุณาอัพโหลดภาพใหม่"
+        else :
+            foundPharmacy = "กรุณาอัพโหลดภาพใหม่"
 
     return foundPharmacy
 
