@@ -15,7 +15,7 @@ pytesseract.pytesseract.tesseract_cmd = r'./Tesseract-OCR/tesseract.exe'
 
 app = FastAPI()
 
-with open('drugName.json','r') as dataSet:
+with open('./drugName.json','r') as dataSet:
   data = json.load(dataSet)
 
 pharmacies = data["drug_list"]
@@ -48,9 +48,8 @@ def findPharmacy(imagePath, pharmacies):
         if pharmacy["drugName"].lower() in text:
             foundPharmacy = pharmacy["drugName"]
             break
-        else :
-            foundPharmacy = "กรุณาอัพโหลดภาพใหม่"
-            
+        # else :
+        #     foundPharmacy = "กรุณาอัพโหลดภาพใหม่"
 
     return foundPharmacy
 
