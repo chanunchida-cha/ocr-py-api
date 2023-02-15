@@ -58,7 +58,7 @@ async def create_upload_file(uploaded_file: UploadFile = File(...)):
     img = cv2.imdecode(np.fromstring(uploaded_file.file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
     print(img)
     result = findPharmacy(img,pharmacies)
-    return {"result":result, "credit-by":"เพชรสุดหล่อ"}
+    return {"result":result, "credit-by":"yok jacky atom petch"}
 
 # def main():
 #     text = findPharmacy("./images/1.jpg", pharmacies)
