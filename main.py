@@ -49,7 +49,7 @@ def findPharmacy(imagePath, pharmacies):
             foundPharmacy = pharmacy["drugName"]
             break
         else :
-            foundPharmacy = "กรุณาอัพโหลดภาพใหม่"
+            foundPharmacy = "ไม่พบข้อมูล กรุณาลองใหม่อีกครั้ง"
 
     return foundPharmacy
 
