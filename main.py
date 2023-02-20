@@ -43,7 +43,7 @@ def findPharmacy(imagePath, pharmacies):
     gray = cv2.medianBlur(gray, 5)
 
     text = pytesseract.image_to_string(
-        gray, config='--psm 11').lower().replace(r'[^\w\s]', '')
+        gray, config='--psm 11 --oem 3 --dpi 999 ').lower().replace(r'[^\w\s]', '')
     foundPharmacy = ""
     for pharmacy in pharmacies:
         if pharmacy["drugName"].lower() in text:
