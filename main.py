@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
+
 pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
 
@@ -40,9 +41,8 @@ def findPharmacy(imagePath, pharmacies):
     # Convert to grayscale
     gray = cv2.cvtColor(imagePath, cv2.COLOR_BGR2GRAY)
     gray = cv2.medianBlur(gray, 5)
- 
 
-
+    config = '--psm 11'
     text = pytesseract.image_to_string(
         gray).lower().replace(r'[^\w\s]', '')
     foundPharmacy = ""
