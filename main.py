@@ -34,6 +34,8 @@ app.add_middleware(
 def findPharmacy(imagePath, pharmacies):
     # Load the image
     # img = cv2.imread(imagePath)
+    #convert to webp
+    webp_data = cv2.imencode('.webp', imagePath)[1].tobytes()
 
     # Convert to grayscale
     gray = cv2.cvtColor(imagePath, cv2.COLOR_BGR2GRAY)
